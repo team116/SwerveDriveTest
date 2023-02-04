@@ -14,7 +14,7 @@ public final class Constants {
     public static final double stickDeadband = 0.1;
 
     public static final int pigeonID = 7;
-    public static final int powerDistributionCenter = 7;
+    public static final int powerDistributionCenter = 6;
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     /* Drivetrain Constants */

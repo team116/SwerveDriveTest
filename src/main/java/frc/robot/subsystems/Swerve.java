@@ -24,24 +24,10 @@ public class Swerve extends SubsystemBase {
 
   private Field2d field;
 
-  private SwerveModulePosition[] swerveModulePositions;
-
   public Swerve() {
     gyro = new Pigeon2(Constants.Swerve.pigeonID);
     gyro.configFactoryDefault();
     zeroGyro();
-
-    // FIXME: Not sure we want it like this, but new constructor for SwerveDriveOdometry requires
-    //        SwerveModulePosition array
-    swerveModulePositions =
-      new SwerveModulePosition[] {
-        new SwerveModulePosition(),
-        new SwerveModulePosition(),
-        new SwerveModulePosition(),
-        new SwerveModulePosition()
-      };
-
-    swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), swerveModulePositions);
 
     mSwerveMods =
         new SwerveModule[] {
@@ -50,6 +36,8 @@ public class Swerve extends SubsystemBase {
           new SwerveModule(2, Constants.Swerve.Mod2.constants),
           new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
+
+    swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getPositions());
 
     field = new Field2d();
     SmartDashboard.putData("Field", field);
@@ -84,8 +72,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    // FIXME: How do we get the correct current swerveModulePositions?????
-    swerveOdometry.resetPosition(getYaw(), swerveModulePositions, pose);
+    swerveOdometry.resetPosition(getYaw(), getPositions(), pose);
     //swerveOdometry.resetPosition(pose, getYaw());
   }
 
@@ -95,6 +82,14 @@ public class Swerve extends SubsystemBase {
       states[mod.moduleNumber] = mod.getState();
     }
     return states;
+  }
+
+  public SwerveModulePosition[] getPositions() {
+    SwerveModulePosition[] positions = new SwerveModulePosition[4];
+    for (SwerveModule mod: mSwerveMods) {
+      positions[mod.moduleNumber] = mod.getPosition();  // NOTE: position is already turned into meters from conversion factor
+    }
+    return positions;
   }
 
   public void zeroGyro() {
@@ -109,9 +104,7 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // FIXME: Yikes, it appears that SwerveModulePosition has taken a portion of the place of SwerveModuleState, and instead of
-    //        speed it tracks distance instead....
-    swerveOdometry.update(getYaw(), swerveModulePositions); // FIXME: need equivalent getModulePositions() to old getStates()
+    swerveOdometry.update(getYaw(), getPositions());
     // swerveOdometry.update(getYaw(), getStates());
     field.setRobotPose(getPose());
 
