@@ -87,7 +87,7 @@ public final class Constants {
       public static final int driveMotorID = 32;
       public static final int angleMotorID = 31;
       public static final int canCoderID = 30;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(199.951);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(22.939);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
@@ -97,7 +97,7 @@ public final class Constants {
       public static final int driveMotorID = 22;
       public static final int angleMotorID = 21;
       public static final int canCoderID = 20;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(138.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(139.394531);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
@@ -107,7 +107,7 @@ public final class Constants {
       public static final int driveMotorID = 42;
       public static final int angleMotorID = 41;
       public static final int canCoderID = 40;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(62.578125);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(61.962891);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
@@ -117,7 +117,7 @@ public final class Constants {
       public static final int driveMotorID = 12;
       public static final int angleMotorID = 11;
       public static final int canCoderID = 10;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(24.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(21.708984);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }

@@ -67,6 +67,9 @@ public class SwerveModule {
     desiredState = OnboardModuleState.optimize(desiredState, getState().angle);
 
     setAngle(desiredState);
+
+    // FIXME: Disabling drive motors for testing only
+    desiredState.speedMetersPerSecond = 0.0;
     setSpeed(desiredState, isOpenLoop);
   }
 
@@ -87,6 +90,7 @@ public class SwerveModule {
     angleMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
     angleMotor.setInverted(Constants.Swerve.angleInvert);
     angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
+    integratedAngleEncoder.setPosition(0.0); // NOTE: Encoder has memory between runs
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleConversionFactor);
     angleController.setP(Constants.Swerve.angleKP);
     angleController.setI(Constants.Swerve.angleKI);
