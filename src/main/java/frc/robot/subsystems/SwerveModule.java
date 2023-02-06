@@ -67,15 +67,26 @@ public class SwerveModule {
     desiredState = OnboardModuleState.optimize(desiredState, getState().angle);
 
     setAngle(desiredState);
-
-    // FIXME: Disabling drive motors for testing only
-    desiredState.speedMetersPerSecond = 0.0;
     setSpeed(desiredState, isOpenLoop);
   }
 
   private void resetToAbsolute() {
     double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
     integratedAngleEncoder.setPosition(absolutePosition);
+    lastAngle = Rotation2d.fromDegrees(absolutePosition);
+    System.out.println("resetToAbsolute called: " + absolutePosition);
+  }
+
+  public void resetRelativeEncoders() {
+    //integratedAngleEncoder.setPosition(0.0);
+    //driveEncoder.setPosition(0.0);
+    //lastAngle = getState().angle;
+    resetToAbsolute();
+  }
+
+  public void setWheelToForward() {
+    resetToAbsolute();
+
   }
 
   private void configAngleEncoder() {
@@ -90,7 +101,7 @@ public class SwerveModule {
     angleMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
     angleMotor.setInverted(Constants.Swerve.angleInvert);
     angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
-    integratedAngleEncoder.setPosition(0.0); // NOTE: Encoder has memory between runs
+    //integratedAngleEncoder.setPosition(0.0); // NOTE: Encoder has memory between runs
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleConversionFactor);
     angleController.setP(Constants.Swerve.angleKP);
     angleController.setI(Constants.Swerve.angleKI);
@@ -121,7 +132,8 @@ public class SwerveModule {
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
       double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-      driveMotor.set(percentOutput);
+      //driveMotor.set(percentOutput);
+      driveMotor.set(0.0);  // FIXME: better way to disable speed
     } else {
       driveController.setReference(
           desiredState.speedMetersPerSecond,
@@ -140,6 +152,19 @@ public class SwerveModule {
 
     angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     lastAngle = angle;
+    // if (desiredState.speedMetersPerSecond < -1.0 || desiredState.speedMetersPerSecond > 1.0) {
+    //   System.out.println("setAngle speed  : " + desiredState.speedMetersPerSecond);
+    //   System.out.println("setAngle desired: " + desiredState.angle.getDegrees());
+    //   System.out.println("setAngle last   : " + lastAngle.getDegrees());
+    // }
+  }
+
+  public double getAngleOffset() {
+    return angleOffset.getDegrees();
+  }
+
+  public double getDesiredAngle() {
+    return lastAngle.getDegrees();
   }
 
   private Rotation2d getAngle() {

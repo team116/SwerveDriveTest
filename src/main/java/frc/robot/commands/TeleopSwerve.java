@@ -36,6 +36,11 @@ public class TeleopSwerve extends CommandBase {
   }
 
   @Override
+  public void initialize() {
+    s_Swerve.resetRelativeEncoders();
+  }
+
+  @Override
   public void execute() {
     /* Get Values, Deadband*/
     double translationVal =
