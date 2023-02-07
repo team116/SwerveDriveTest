@@ -102,6 +102,7 @@ public class SwerveModule {
     angleMotor.setInverted(Constants.Swerve.angleInvert);
     angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
     //integratedAngleEncoder.setPosition(0.0); // NOTE: Encoder has memory between runs
+    // integratedAngleEncoder.setInverted(true);
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleConversionFactor);
     angleController.setP(Constants.Swerve.angleKP);
     angleController.setI(Constants.Swerve.angleKI);
@@ -132,8 +133,8 @@ public class SwerveModule {
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
       double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-      //driveMotor.set(percentOutput);
-      driveMotor.set(0.0);  // FIXME: better way to disable speed
+      driveMotor.set(percentOutput);
+      // driveMotor.set(0.0);
     } else {
       driveController.setReference(
           desiredState.speedMetersPerSecond,
