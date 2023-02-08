@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.revrobotics.SparkMaxAlternateEncoder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -41,6 +39,12 @@ public class Swerve extends SubsystemBase {
 
     field = new Field2d();
     SmartDashboard.putData("Field", field);
+  }
+
+  public void resetRelativeEncoders() {
+    for (SwerveModule swerveModule : mSwerveMods) {
+      swerveModule.resetRelativeEncoders();
+    }
   }
 
   public void drive(
@@ -115,6 +119,11 @@ public class Swerve extends SubsystemBase {
           "Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
       SmartDashboard.putNumber(
           "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+      SmartDashboard.putNumber(
+        "Mod " + mod.moduleNumber + " Desired", mod.getDesiredAngle());
+
+      SmartDashboard.putNumber(
+        "Mod " + mod.moduleNumber + " Adj Cancoder", mod.getCanCoder().getDegrees() - mod.getAngleOffset());
     }
   }
 }
