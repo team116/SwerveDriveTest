@@ -45,9 +45,9 @@ public class RobotContainer {
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(
             s_Swerve,
-            () -> -driver.getRawAxis(translationAxis),
-            () -> -driver.getRawAxis(strafeAxis),
-            () -> -driver.getRawAxis(rotationAxis),
+            () -> shape(-driver.getRawAxis(translationAxis)),
+            () -> shape(-driver.getRawAxis(strafeAxis)),
+            () -> shape(-driver.getRawAxis(rotationAxis)),
             () -> robotCentric.getAsBoolean()));
 
     // Configure the button bindings
@@ -73,5 +73,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return new exampleAuto(s_Swerve);
+  }
+
+  public static double shape(double start){
+    if (start < 0){
+      return -(start * start);
+    }
+    return start * start;
   }
 }
