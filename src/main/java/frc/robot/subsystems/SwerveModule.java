@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.config.SwerveModuleConstants;
 import frc.lib.math.OnboardModuleState;
 import frc.lib.util.CANCoderUtil;
@@ -101,8 +102,6 @@ public class SwerveModule {
     angleMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
     angleMotor.setInverted(Constants.Swerve.angleInvert);
     angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
-    //integratedAngleEncoder.setPosition(0.0); // NOTE: Encoder has memory between runs
-    // integratedAngleEncoder.setInverted(true);
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleConversionFactor);
     angleController.setP(Constants.Swerve.angleKP);
     angleController.setI(Constants.Swerve.angleKI);
@@ -133,8 +132,9 @@ public class SwerveModule {
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
       double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+      SmartDashboard.putNumber("mod " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
+      SmartDashboard.putNumber("mod " + moduleNumber + " % val", percentOutput);
       driveMotor.set(percentOutput);
-      // driveMotor.set(0.0);
     } else {
       driveController.setReference(
           desiredState.speedMetersPerSecond,
@@ -153,11 +153,6 @@ public class SwerveModule {
 
     angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     lastAngle = angle;
-    // if (desiredState.speedMetersPerSecond < -1.0 || desiredState.speedMetersPerSecond > 1.0) {
-    //   System.out.println("setAngle speed  : " + desiredState.speedMetersPerSecond);
-    //   System.out.println("setAngle desired: " + desiredState.angle.getDegrees());
-    //   System.out.println("setAngle last   : " + lastAngle.getDegrees());
-    // }
   }
 
   public double getAngleOffset() {
