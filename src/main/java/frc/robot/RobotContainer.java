@@ -37,7 +37,11 @@ public class RobotContainer {
   private final JoystickButton robotCentric =
       new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
+  private final JoystickButton toggleTesterButton =
+      new JoystickButton(driver, XboxController.Button.kB.value);
+
   /* Subsystems */
+  private final Limelight limelight = new Limelight();
   private final Swerve s_Swerve = new Swerve();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -47,8 +51,10 @@ public class RobotContainer {
             s_Swerve,
             () -> shape(-driver.getRawAxis(translationAxis)),
             () -> shape(-driver.getRawAxis(strafeAxis)),
-            () -> shape(-driver.getRawAxis(rotationAxis)),
+            () -> rotationShape(-driver.getRawAxis(rotationAxis)),
             () -> robotCentric.getAsBoolean()));
+
+    limelight.setDefaultCommand(new DefaultLimelightCommand(limelight));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -63,6 +69,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
+    toggleTesterButton.onTrue(new InstantCommand(() -> limelight.toggleStreamMode()));
   }
 
   /**
@@ -80,5 +88,9 @@ public class RobotContainer {
       return -(start * start);
     }
     return start * start;
+  }
+
+  public static double rotationShape(double start) {
+    return shape(start) / 2.0d;
   }
 }
