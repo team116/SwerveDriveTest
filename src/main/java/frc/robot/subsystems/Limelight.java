@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import org.ejml.interfaces.decomposition.LUSparseDecomposition;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,4 +45,13 @@ public class Limelight extends SubsystemBase {
         setLedMode(LED_FORCE_OFF);
     }
 
+    public boolean hasValidTarget(){
+        return limelightTable.getEntry("tv").getBoolean(false);
+    }
+
+    public double targetAreaPercentageOfImage(){
+        return limelightTable.getEntry("ta").getDouble(0.0d);
+    }
+
+    // public double horizantalOffsetFrom
 }
