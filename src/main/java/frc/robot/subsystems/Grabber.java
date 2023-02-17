@@ -20,5 +20,12 @@ public class Grabber extends SubsystemBase{
         grabberMotor.set(-0.02);
     }
 
+    public void openClaw(){
+
+    }
+
+    public void closeClaw(){
+        
+    }
     
 }
