@@ -18,23 +18,23 @@ public final class Constants {
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     /* Drivetrain Constants */
-    public static final double trackWidth = Units.inchesToMeters(31.375);
-    public static final double wheelBase = Units.inchesToMeters(29.125);
+    public static final double FRONT_TO_BACK_AXLE_TO_AXLE_METERS = Units.inchesToMeters(27.25);
+    public static final double SIDE_TO_SIDE_TREAD_CENTER_TO_TREAD_CENTER_METERS = Units.inchesToMeters(27.25);
     public static final double wheelDiameter = Units.inchesToMeters(4.0);
     public static final double wheelCircumference = wheelDiameter * Math.PI; //12.56637
 
     public static final double openLoopRamp = 0.25;
     public static final double closedLoopRamp = 0.0;
 
-    public static final double driveGearRatio = (6.75 / 1.0);
+    public static final double driveGearRatio = (6.5 / 1.0); // original value 6.75
     public static final double angleGearRatio = (150.0 / 7.0);
 
     public static final SwerveDriveKinematics swerveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+            new Translation2d(SIDE_TO_SIDE_TREAD_CENTER_TO_TREAD_CENTER_METERS / 2.0, FRONT_TO_BACK_AXLE_TO_AXLE_METERS / 2.0),
+            new Translation2d(SIDE_TO_SIDE_TREAD_CENTER_TO_TREAD_CENTER_METERS / 2.0, -FRONT_TO_BACK_AXLE_TO_AXLE_METERS / 2.0),
+            new Translation2d(-SIDE_TO_SIDE_TREAD_CENTER_TO_TREAD_CENTER_METERS / 2.0, FRONT_TO_BACK_AXLE_TO_AXLE_METERS / 2.0),
+            new Translation2d(-SIDE_TO_SIDE_TREAD_CENTER_TO_TREAD_CENTER_METERS / 2.0, -FRONT_TO_BACK_AXLE_TO_AXLE_METERS / 2.0));
 
     /* Swerve Voltage Compensation */
     public static final double voltageComp = 12.0;
@@ -124,8 +124,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 0.25; // original value 3
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 2.0; // original value 3
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // original value 3
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

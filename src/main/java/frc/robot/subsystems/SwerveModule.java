@@ -132,8 +132,8 @@ public class SwerveModule {
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
       double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-      SmartDashboard.putNumber("mod " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
-      SmartDashboard.putNumber("mod " + moduleNumber + " % val", percentOutput);
+      SmartDashboard.putNumber("Mod " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
+      SmartDashboard.putNumber("Mod " + moduleNumber + " % val", percentOutput);
       driveMotor.set(percentOutput);
     } else {
       driveController.setReference(
@@ -178,5 +178,13 @@ public class SwerveModule {
   public SwerveModulePosition getPosition() {
     // NOTE: the driveEncoder.getPosition() needs to be in meters, so ensure conversion factor does that
     return new SwerveModulePosition(driveEncoder.getPosition(), getAngle());
+  }
+
+  public double getDriveEncoder(){
+    return driveEncoder.getPosition();
+  }
+
+  public double countsPerRev(){
+    return driveEncoder.getCountsPerRevolution();
   }
 }
