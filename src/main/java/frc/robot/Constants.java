@@ -26,7 +26,7 @@ public final class Constants {
     public static final double openLoopRamp = 0.25;
     public static final double closedLoopRamp = 0.0;
 
-    public static final double driveGearRatio = (6.5 / 1.0); // original value 6.75
+    public static final double driveGearRatio = (6.75 / 1.0); // original value 6.75
     public static final double angleGearRatio = (150.0 / 7.0);
 
     public static final SwerveDriveKinematics swerveKinematics =
@@ -50,7 +50,7 @@ public final class Constants {
     public static final double angleKFF = 0.0;
 
     /* Drive Motor PID Values */
-    public static final double driveKP = 0.1;
+    public static final double driveKP = 1.0; // original value 0.1 // good manual driving 0.3
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKFF = 0.0;
@@ -124,8 +124,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 2.0; // original value 3
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.0; // original value 3
+    public static final double kMaxSpeedMetersPerSecond = 3.5; // original value 3
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.5; // original value 3
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

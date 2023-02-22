@@ -68,6 +68,7 @@ public class Swerve extends SubsystemBase {
 
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+      
     }
   }
 
@@ -123,7 +124,6 @@ public class Swerve extends SubsystemBase {
           modName + " Velocity", mod.getState().speedMetersPerSecond);
       SmartDashboard.putNumber(
         modName + " Desired", mod.getDesiredAngle());
-
       SmartDashboard.putNumber(
         modName + " Adj Cancoder", mod.getCanCoder().getDegrees() - mod.getAngleOffset());
       SmartDashboard.putNumber(modName + " distance Meters", mod.getPosition().distanceMeters);

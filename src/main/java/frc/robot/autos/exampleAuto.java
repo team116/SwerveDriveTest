@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -29,11 +30,12 @@ public class exampleAuto extends SequentialCommandGroup {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(.1596 * 5.0, 0)), // x is 1 y is 1, x is 2 y is -1
+            List.of(new Translation2d(0.1596 * 5.0, 0)), // x is 1 y is 1, x is 2 y is -1
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(0.319 * 5.0, 0, new Rotation2d(0)), // x is 3 y is 0
             config);
 
+    SmartDashboard.putString("The Example trajectory", exampleTrajectory.toString());
     var thetaController =
         new ProfiledPIDController(
             Constants.AutoConstants.kPThetaController,
