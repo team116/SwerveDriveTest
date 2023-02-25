@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.function.BooleanSupplier;
 
+import org.opencv.core.Point;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -46,6 +48,9 @@ public class RobotContainer {
   private final JoystickButton disableArmLimitSwitches = 
       new JoystickButton(driver, XboxController.Button.kA.value);
 
+  private final JoystickButton autoAlignMacroButton =
+      new JoystickButton(driver, XboxController.Button.kStart.value);
+
    /* Subsystems */
   private final Arm arm = new Arm(51);
   private final Limelight limelight = new Limelight();
@@ -80,6 +85,8 @@ public class RobotContainer {
 
     enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.enableLimitSwitches()));
     disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
+
+    autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
   }
 
   /**
