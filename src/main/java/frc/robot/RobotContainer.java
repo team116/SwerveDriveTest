@@ -40,7 +40,14 @@ public class RobotContainer {
   private final JoystickButton toggleTesterButton =
       new JoystickButton(driver, XboxController.Button.kB.value);
 
-  /* Subsystems */
+  private final JoystickButton enableArmLimitSwitches = 
+      new JoystickButton((driver), XboxController.Button.kX.value);
+
+  private final JoystickButton disableArmLimitSwitches = 
+      new JoystickButton(driver, XboxController.Button.kA.value);
+
+   /* Subsystems */
+  private final Arm arm = new Arm(51);
   private final Limelight limelight = new Limelight();
   private final Swerve s_Swerve = new Swerve();
 
@@ -55,7 +62,7 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()));
 
     limelight.setDefaultCommand(new DefaultLimelightCommand(limelight));
-
+    arm.stop();
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -68,9 +75,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
     toggleTesterButton.onTrue(new InstantCommand(() -> limelight.toggleStreamMode()));
+
+    enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.enableLimitSwitches()));
+    disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
   }
 
   /**

@@ -129,7 +129,6 @@ public class Swerve extends SubsystemBase {
       SmartDashboard.putNumber(modName + " distance Meters", mod.getPosition().distanceMeters);
       SmartDashboard.putNumber(modName + " drive motor angle", mod.getPosition().angle.getDegrees());
       SmartDashboard.putNumber(modName + " drive motor encoder", mod.getDriveEncoder());
-      SmartDashboard.putNumber(modName + " counts per rev", mod.countsPerRev());
     }
   }
 }
