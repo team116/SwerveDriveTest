@@ -62,7 +62,6 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()));
 
     limelight.setDefaultCommand(new DefaultLimelightCommand(limelight));
-    arm.stop();
     // Configure the button bindings
     configureButtonBindings();
   }
