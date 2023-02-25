@@ -119,11 +119,13 @@ public class SwerveModule {
     driveMotor.setInverted(Constants.Swerve.driveInvert);
     driveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
     driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);
+    SmartDashboard.putNumber("Mod " + moduleNumber + " velocity conversion factor actual", driveEncoder.getVelocityConversionFactor());
+    SmartDashboard.putNumber("Mod " + moduleNumber + " velocity conversion factor desired", Constants.Swerve.driveConversionVelocityFactor);
     driveEncoder.setPositionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
-    driveController.setP(Constants.Swerve.angleKP);
-    driveController.setI(Constants.Swerve.angleKI);
-    driveController.setD(Constants.Swerve.angleKD);
-    driveController.setFF(Constants.Swerve.angleKFF);
+    driveController.setP(Constants.Swerve.driveKP);
+    driveController.setI(Constants.Swerve.driveKI);
+    driveController.setD(Constants.Swerve.driveKD);
+    driveController.setFF(Constants.Swerve.driveKFF);
     driveMotor.enableVoltageCompensation(Constants.Swerve.voltageComp);
     driveMotor.burnFlash();
     driveEncoder.setPosition(0.0);
@@ -132,15 +134,16 @@ public class SwerveModule {
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
       double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-      SmartDashboard.putNumber("mod " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
-      SmartDashboard.putNumber("mod " + moduleNumber + " % val", percentOutput);
+      SmartDashboard.putNumber("Mod " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
+      SmartDashboard.putNumber("Mod " + moduleNumber + " % val", percentOutput);
       driveMotor.set(percentOutput);
     } else {
+      SmartDashboard.putNumber("Auto " + moduleNumber + " speed", desiredState.speedMetersPerSecond);
       driveController.setReference(
           desiredState.speedMetersPerSecond,
           ControlType.kVelocity,
           0,
-          feedforward.calculate(desiredState.speedMetersPerSecond));
+          0.0); //feedforward.calculate(desiredState.speedMetersPerSecond)
     }
   }
 
@@ -178,5 +181,13 @@ public class SwerveModule {
   public SwerveModulePosition getPosition() {
     // NOTE: the driveEncoder.getPosition() needs to be in meters, so ensure conversion factor does that
     return new SwerveModulePosition(driveEncoder.getPosition(), getAngle());
+  }
+
+  public double getDriveEncoder(){
+    return driveEncoder.getPosition();
+  }
+
+  public double countsPerRev(){
+    return driveEncoder.getCountsPerRevolution();
   }
 }
