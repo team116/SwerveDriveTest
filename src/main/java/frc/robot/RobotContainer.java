@@ -42,10 +42,10 @@ public class RobotContainer {
   private final JoystickButton toggleTesterButton =
       new JoystickButton(driver, XboxController.Button.kB.value);
 
-  private final JoystickButton enableArmLimitSwitches = 
+  private final JoystickButton enableArmLimitSwitches =
       new JoystickButton((driver), XboxController.Button.kX.value);
 
-  private final JoystickButton disableArmLimitSwitches = 
+  private final JoystickButton disableArmLimitSwitches =
       new JoystickButton(driver, XboxController.Button.kA.value);
 
   private final JoystickButton autoAlignMacroButton =

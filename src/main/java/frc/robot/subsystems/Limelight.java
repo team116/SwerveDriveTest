@@ -46,7 +46,7 @@ public class Limelight extends SubsystemBase {
     }
 
     public boolean hasValidTarget(){
-        return limelightTable.getEntry("tv").getBoolean(false);
+        return limelightTable.getEntry("ta").getDouble(0.0d) > 0.25d;
     }
 
     public double targetAreaPercentageOfImage(){
