@@ -34,16 +34,20 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro =
       new JoystickButton(driver, XboxController.Button.kY.value);
+
   private final JoystickButton robotCentric =
       new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
   private final JoystickButton toggleTesterButton =
       new JoystickButton(driver, XboxController.Button.kB.value);
 
-  private final JoystickButton enableArmLimitSwitches =
-      new JoystickButton((driver), XboxController.Button.kX.value);
+  private final JoystickButton armMotorForward = 
+      new JoystickButton(driver, XboxController.Button.kX.value);
 
-  private final JoystickButton disableArmLimitSwitches =
+  private final JoystickButton armMotorReverse = 
+      new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+
+  private final JoystickButton enableArmLimitSwitches =
       new JoystickButton(driver, XboxController.Button.kA.value);
 
   private final JoystickButton autoAlignMacroButton =
@@ -86,11 +90,13 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
     toggleTesterButton.onTrue(new InstantCommand(() -> limelight.toggleStreamMode()));
-
-    enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.enableLimitSwitches()));
-    disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
-
     autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
+
+    armMotorForward.onTrue(new InstantCommand(() -> arm.moveUp()));
+    armMotorReverse.onTrue(new InstantCommand(() -> arm.moveDown()));
+
+    enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
+    enableArmLimitSwitches.onFalse(new InstantCommand(() -> arm.enableLimitSwitches()));
   }
 
   /**

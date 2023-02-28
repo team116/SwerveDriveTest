@@ -13,6 +13,24 @@ public class Arm extends SubsystemBase{
     private CANCoder armCanCoder;
     private SparkMaxLimitSwitch armTopLimitSwitch;
     private SparkMaxLimitSwitch armBottomLimitSwitch;
+    public enum Position{
+        HIGH_GOAL(0.0), 
+        MID_GOAL(0.0),
+        HUMAN_PLAYER_STATION(0.0),
+        PICK_UP(0.0),
+        LOWEST_POINT(0.0),
+        CHARGING_STATION(0.0),
+        DRIVE(0.0);
+        private final double angleDegrees;
+
+        Position(double angleDegrees){
+            this.angleDegrees = angleDegrees;
+        }
+
+        public double getAngleDegrees(){
+            return angleDegrees;
+        }
+    }
 
     public Arm(int armCanID){
         armMotor = new CANSparkMax(armCanID, MotorType.kBrushless);
@@ -36,6 +54,9 @@ public class Arm extends SubsystemBase{
         armMotor.set(-0.02);
     }
 
+    public void moveToPos(Arm.Position desiredPosition){
+        // armMotor.
+    }
     public void highGoal(){
         
     }
@@ -51,6 +72,8 @@ public class Arm extends SubsystemBase{
     public void humanPlayerStation(){
 
     }
+
+
 
     public void enableLimitSwitches(){
         armBottomLimitSwitch.enableLimitSwitch(true);
