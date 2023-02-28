@@ -46,12 +46,22 @@ public class Limelight extends SubsystemBase {
     }
 
     public boolean hasValidTarget(){
-        return limelightTable.getEntry("tv").getBoolean(false);
+        return limelightTable.getEntry("ta").getDouble(0.0d) > 0.25d;
     }
 
     public double targetAreaPercentageOfImage(){
         return limelightTable.getEntry("ta").getDouble(0.0d);
     }
 
-    // public double horizantalOffsetFrom
+    /**
+     * Returns a degree value in the range of -29.8 to 29.8 degrees, that represents how far off the
+     * targeting crosshair on the limelight is horizontally away from the center of the recognized
+     * target.
+     * 
+     * @return a degree value from -29.8 to 29.8 degrees
+     */
+    public double horizontalOffsetFromCrosshairAsDegrees() {
+        return limelightTable.getEntry("tx").getDouble(0.0d);
+    }
+
 }

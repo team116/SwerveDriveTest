@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -40,11 +38,14 @@ public class RobotContainer {
   private final JoystickButton toggleTesterButton =
       new JoystickButton(driver, XboxController.Button.kB.value);
 
-  private final JoystickButton enableArmLimitSwitches = 
+  private final JoystickButton enableArmLimitSwitches =
       new JoystickButton((driver), XboxController.Button.kX.value);
 
-  private final JoystickButton disableArmLimitSwitches = 
+  private final JoystickButton disableArmLimitSwitches =
       new JoystickButton(driver, XboxController.Button.kA.value);
+
+  private final JoystickButton autoAlignMacroButton =
+      new JoystickButton(driver, XboxController.Button.kStart.value);
 
    /* Subsystems */
   private final Arm arm = new Arm(51);
@@ -80,6 +81,8 @@ public class RobotContainer {
 
     enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.enableLimitSwitches()));
     disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
+
+    autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
   }
 
   /**
