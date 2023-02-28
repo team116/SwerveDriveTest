@@ -87,7 +87,6 @@ public class SwerveModule {
 
   public void setWheelToForward() {
     resetToAbsolute();
-
   }
 
   private void configAngleEncoder() {

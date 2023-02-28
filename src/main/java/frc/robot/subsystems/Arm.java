@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
+import java.lang.invoke.VarHandle.AccessMode;
+
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,6 +19,9 @@ public class Arm extends SubsystemBase{
     private CANCoder armCanCoder;
     private SparkMaxLimitSwitch armTopLimitSwitch;
     private SparkMaxLimitSwitch armBottomLimitSwitch;
+    private SparkMaxPIDController armMotorController;
+    private RelativeEncoder armEncoder;
+
     public enum Position{
         HIGH_GOAL(0.0), 
         MID_GOAL(0.0),
@@ -20,7 +29,7 @@ public class Arm extends SubsystemBase{
         PICK_UP(0.0),
         LOWEST_POINT(0.0),
         CHARGING_STATION(0.0),
-        DRIVE(0.0);
+        DRIVE(180);
         private final double angleDegrees;
 
         Position(double angleDegrees){
@@ -34,16 +43,24 @@ public class Arm extends SubsystemBase{
 
     public Arm(int armCanID){
         armMotor = new CANSparkMax(armCanID, MotorType.kBrushless);
-        armMotor.setInverted(true);
+        armMotor.setIdleMode(IdleMode.kBrake);
+
         // armCanCoder = new CANCoder(armCanCoderID);
+
+        armEncoder = armMotor.getEncoder();
+
         armTopLimitSwitch = armMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
         armTopLimitSwitch.enableLimitSwitch(true);
         armBottomLimitSwitch = armMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
         armBottomLimitSwitch.enableLimitSwitch(true);
+        
+        armMotorController = armMotor.getPIDController();
+        armMotorController.setP(0.001);
+        armMotor.burnFlash();
     }
 
     public void moveUp(){
-        armMotor.set(0.02);
+        moveToPos(Position.DRIVE);
     }
 
     public void stop(){
@@ -55,7 +72,9 @@ public class Arm extends SubsystemBase{
     }
 
     public void moveToPos(Arm.Position desiredPosition){
-        // armMotor.
+        Rotation2d angle = Rotation2d.fromDegrees(180);
+        armMotorController.setReference(22, CANSparkMax.ControlType.kPosition);
+        SmartDashboard.putNumber("Arm Motor Encoder", armMotor.getEncoder().getPosition());
     }
     public void highGoal(){
         
@@ -73,8 +92,6 @@ public class Arm extends SubsystemBase{
 
     }
 
-
-
     public void enableLimitSwitches(){
         armBottomLimitSwitch.enableLimitSwitch(true);
         armTopLimitSwitch.enableLimitSwitch(true);
@@ -85,5 +102,7 @@ public class Arm extends SubsystemBase{
         armTopLimitSwitch.enableLimitSwitch(false);
     }
 
-
+    public double getEncoder(){
+        return armMotor.getEncoder().getPosition();
+    }
 }
