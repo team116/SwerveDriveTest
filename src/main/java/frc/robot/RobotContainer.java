@@ -54,12 +54,16 @@ public class RobotContainer {
       new JoystickButton(driver, XboxController.Button.kStart.value);
 
    /* Subsystems */
-  private final Arm arm = new Arm(51);
+  private final Arm arm = new Arm();
   private final Limelight limelight = new Limelight();
   private final Swerve s_Swerve = new Swerve();
+<<<<<<< HEAD
 
   private final SendableChooser<Command> sendableChooser = new SendableChooser<>();
 
+=======
+  
+>>>>>>> cb11b7d (Worked with PID things for arm, added a new arm command)
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_Swerve.setDefaultCommand(
@@ -71,6 +75,8 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()));
 
     limelight.setDefaultCommand(new DefaultLimelightCommand(limelight));
+
+    arm.setDefaultCommand(new ArmCommand(arm));
     // Configure the button bindings
     configureButtonBindings();
 

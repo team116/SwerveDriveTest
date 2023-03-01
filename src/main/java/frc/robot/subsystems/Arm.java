@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.lang.invoke.VarHandle.AccessMode;
-
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -41,13 +39,14 @@ public class Arm extends SubsystemBase{
         }
     }
 
-    public Arm(int armCanID){
-        armMotor = new CANSparkMax(armCanID, MotorType.kBrushless);
+    public Arm(){
+        armMotor = new CANSparkMax(51, MotorType.kBrushless);
         armMotor.setIdleMode(IdleMode.kBrake);
 
         // armCanCoder = new CANCoder(armCanCoderID);
 
         armEncoder = armMotor.getEncoder();
+        armEncoder.setPosition(0.0);
 
         armTopLimitSwitch = armMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
         armTopLimitSwitch.enableLimitSwitch(true);
@@ -55,7 +54,9 @@ public class Arm extends SubsystemBase{
         armBottomLimitSwitch.enableLimitSwitch(true);
         
         armMotorController = armMotor.getPIDController();
-        armMotorController.setP(0.001);
+        armMotorController.setP(30.0);// original value before playing with is 0.001, 30 looks like it works nicely
+        armMotorController.setOutputRange(-0.1, 0.1);
+        armMotorController.setFF(0.0);
         armMotor.burnFlash();
     }
 
@@ -74,7 +75,6 @@ public class Arm extends SubsystemBase{
     public void moveToPos(Arm.Position desiredPosition){
         Rotation2d angle = Rotation2d.fromDegrees(180);
         armMotorController.setReference(22, CANSparkMax.ControlType.kPosition);
-        SmartDashboard.putNumber("Arm Motor Encoder", armMotor.getEncoder().getPosition());
     }
     public void highGoal(){
         
@@ -104,5 +104,9 @@ public class Arm extends SubsystemBase{
 
     public double getEncoder(){
         return armMotor.getEncoder().getPosition();
+    }
+
+    public void resetArmEncoder(){
+        armEncoder.setPosition(0.0);
     }
 }
