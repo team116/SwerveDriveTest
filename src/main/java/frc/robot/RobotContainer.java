@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -48,6 +50,11 @@ public class RobotContainer {
 
   private final JoystickButton autoAlignMacroButton =
       new JoystickButton(driver, XboxController.Button.kStart.value);
+
+  private final POVButton dpadUp = new POVButton(driver, 0);
+  private final POVButton dpadRight = new POVButton(driver, 90);
+  private final POVButton dpadDown = new POVButton(driver, 180);
+  private final POVButton dpadLeft = new POVButton(driver, 270);
 
    /* Subsystems */
   private final Arm arm = new Arm(51);
@@ -91,6 +98,15 @@ public class RobotContainer {
     disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
 
     autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
+
+    // NOTE: These are just debugging examples of possible ways to use dpad
+    dpadUp.onTrue(new InstantCommand(() -> System.out.println("dpadUp")));
+    dpadRight.onTrue(new InstantCommand(() -> System.out.println("dpadRight")));
+    dpadDown.onTrue(new InstantCommand(() -> System.out.println("dpadDown")));
+    dpadLeft.onTrue(new InstantCommand(() -> System.out.println("dpadLeft")));
+
+    dpadUp.whileTrue(new RepeatCommand(new InstantCommand(() -> System.out.println("arm up"))));
+    dpadDown.whileTrue(new RepeatCommand(new InstantCommand(() -> System.out.println("arm down"))));
   }
 
   /**
