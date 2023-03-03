@@ -23,6 +23,7 @@ public final class Constants {
     public static final int PIGEON_ID = 7;
     public static final int POWER_DISTRIBUTION_CENTER = 6;
     public static final boolean INVERT_GYRO = false; // Always ensure Gyro is CCW+ CW-
+    public static final int ARM_MOTOR_ID = 51;
 
     /* Drivetrain Constants */
     public static final double FRONT_TO_BACK_AXLE_TO_AXLE_METERS = getFrontToBackAxleToAxleMeters();

@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Arm extends SubsystemBase{
     private CANSparkMax armMotor;
@@ -27,7 +28,7 @@ public class Arm extends SubsystemBase{
         PICK_UP(0.0),
         LOWEST_POINT(0.0),
         CHARGING_STATION(0.0),
-        DRIVE(180);
+        DRIVE(0.0);
         private final double angleDegrees;
 
         Position(double angleDegrees){
@@ -40,7 +41,7 @@ public class Arm extends SubsystemBase{
     }
 
     public Arm(){
-        armMotor = new CANSparkMax(51, MotorType.kBrushless);
+        armMotor = new CANSparkMax(Constants.Swerve.ARM_MOTOR_ID, MotorType.kBrushless);
         armMotor.setIdleMode(IdleMode.kBrake);
 
         // armCanCoder = new CANCoder(armCanCoderID);
@@ -73,7 +74,6 @@ public class Arm extends SubsystemBase{
     }
 
     public void moveToPos(Arm.Position desiredPosition){
-        Rotation2d angle = Rotation2d.fromDegrees(180);
         armMotorController.setReference(22, CANSparkMax.ControlType.kPosition);
     }
     public void highGoal(){
