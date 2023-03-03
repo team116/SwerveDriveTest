@@ -13,7 +13,7 @@ import static frc.robot.RobotSpecificConstants.getSideToSideTreadCenterToTreadCe
 import static frc.robot.RobotSpecificConstants.getAngleOffsetModule0;
 import static frc.robot.RobotSpecificConstants.getAngleOffsetModule1;
 import static frc.robot.RobotSpecificConstants.getAngleOffsetModule2;
-import static frc.robot.RobotSpecificConstants.getAngleOffsetMod3;
+import static frc.robot.RobotSpecificConstants.getAngleOffsetModule3;
 
 public final class Constants {
 
@@ -124,7 +124,7 @@ public final class Constants {
       public static final int DRIVE_MOTOR_ID = 12;
       public static final int ANGLE_MOTOR_ID = 11;
       public static final int CAN_CODER_ID = 10;
-      public static final Rotation2d ANGLE_OFFSET = getAngleOffsetMod3();
+      public static final Rotation2d ANGLE_OFFSET = getAngleOffsetModule3();
       public static final SwerveModuleConstants CONSTANTS =
           new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CAN_CODER_ID, ANGLE_OFFSET);
     }

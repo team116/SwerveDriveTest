@@ -27,7 +27,7 @@ public final class RobotSpecificConstants {
         return Rotation2d.fromDegrees(ROBOT_SPECIFIC_CONSTANTS.getAngleOffsetDegreesMod2());
     }
 
-    public static Rotation2d getAngleOffsetMod3() {
+    public static Rotation2d getAngleOffsetModule3() {
         return Rotation2d.fromDegrees(ROBOT_SPECIFIC_CONSTANTS.getAngleOffsetDegreesMod3());
     }
 
