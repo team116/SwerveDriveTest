@@ -57,13 +57,9 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   private final Limelight limelight = new Limelight();
   private final Swerve s_Swerve = new Swerve();
-<<<<<<< HEAD
 
   private final SendableChooser<Command> sendableChooser = new SendableChooser<>();
 
-=======
-  
->>>>>>> cb11b7d (Worked with PID things for arm, added a new arm command)
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_Swerve.setDefaultCommand(

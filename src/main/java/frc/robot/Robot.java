@@ -5,10 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-=======
->>>>>>> cb11b7d (Worked with PID things for arm, added a new arm command)
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
