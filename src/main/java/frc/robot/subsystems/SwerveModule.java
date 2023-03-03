@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -71,10 +73,16 @@ public class SwerveModule {
     setSpeed(desiredState, isOpenLoop);
   }
 
+  public void setDesiredPosition(SwerveModulePosition desiredPosition) {
+    setAngle(desiredPosition);
+    setPosition(desiredPosition);
+  }
+
   private void resetToAbsolute() {
     double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
     integratedAngleEncoder.setPosition(absolutePosition);
     lastAngle = Rotation2d.fromDegrees(absolutePosition);
+    driveEncoder.setPosition(0.0);
     System.out.println("resetToAbsolute called: " + absolutePosition);
   }
 
@@ -155,6 +163,17 @@ public class SwerveModule {
 
     angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     lastAngle = angle;
+  }
+
+  private void setAngle(SwerveModulePosition desiredPosition) {
+    angleController.setReference(desiredPosition.angle.getDegrees(), ControlType.kPosition);
+    lastAngle = desiredPosition.angle;
+  }
+
+  private void setPosition(SwerveModulePosition desiredPosition) {
+    driveController.setReference(
+      desiredPosition.distanceMeters,
+      ControlType.kPosition);  // NOTE: Have 0..3 pid controller positions if we choose to use them
   }
 
   public double getAngleOffset() {

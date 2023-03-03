@@ -77,7 +77,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     sendableChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
-    sendableChooser.addOption("Maybe do Something", new DriveToPositionCommand());
+    sendableChooser.addOption("Drive To Position", new DriveToPositionCommand(s_Swerve));
     SmartDashboard.putData(sendableChooser);
   }
 
