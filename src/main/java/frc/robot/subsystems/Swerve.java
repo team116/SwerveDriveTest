@@ -48,6 +48,12 @@ public class Swerve extends SubsystemBase {
     }
   }
 
+  public void setMinMax(double min, double max, int pidSlot){
+    for (SwerveModule swerveModule : mSwerveMods){
+      swerveModule.setMinMax(min, max, pidSlot);
+    }
+  }
+
   public void drive(
       Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
@@ -76,6 +82,33 @@ public class Swerve extends SubsystemBase {
   public void setModulePositions(SwerveModulePosition[] desiredPositions) {
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredPosition(desiredPositions[mod.moduleNumber]);
+    }
+  }
+
+  public void setModulePositions(SwerveModulePosition[] desiredPositions, int pidSlot) {
+    for (SwerveModule mod : mSwerveMods) {
+      mod.setDesiredPosition(desiredPositions[mod.moduleNumber], pidSlot);
+    }
+  }
+
+  public void setPID(double p, double i, double d, int pidSlot){
+    for (SwerveModule mod : mSwerveMods){
+      mod.setP(p, pidSlot);
+      mod.setI(i, pidSlot);
+      mod.setD(d, pidSlot);
+    }
+  }
+
+  
+
+  public void burnFlash(){
+    for (SwerveModule mod : mSwerveMods){
+      mod.burnFlash();
+    }
+  }
+  public void runToPosition(double position, int pidSlot){
+    for (SwerveModule mod : mSwerveMods){
+      mod.goToPosition(position, pidSlot);
     }
   }
 
