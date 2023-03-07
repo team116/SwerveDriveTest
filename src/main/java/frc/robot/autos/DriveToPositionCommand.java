@@ -12,7 +12,7 @@ public class DriveToPositionCommand extends CommandBase {
     private Swerve swerve;
     private int pidSlot = 1;
     private double distance = 72 / 39.37;
-    private Rotation2d angle = new Rotation2d(0);
+    private Rotation2d angle = Rotation2d.fromDegrees(90.0d);
     private SwerveModulePosition [] listOfModulePositions = {new SwerveModulePosition(distance, angle), 
                                                             new SwerveModulePosition(distance, angle), 
                                                             new SwerveModulePosition(distance, angle),
