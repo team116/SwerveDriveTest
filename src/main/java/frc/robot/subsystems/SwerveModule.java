@@ -114,13 +114,17 @@ public class SwerveModule {
     angleMotor.setSmartCurrentLimit(Constants.Swerve.ANGLE_CONTINUOUS_CURRENT_LIMIT);
     angleMotor.setInverted(Constants.Swerve.ANGLE_INVERT);
     angleMotor.setIdleMode(Constants.Swerve.ANGLE_NEUTRAL_MODE);
+
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.ANGLE_CONVERSION_FACTOR);
+
     angleController.setP(Constants.Swerve.ANGLE_KP);
     angleController.setI(Constants.Swerve.ANGLE_KI);
     angleController.setD(Constants.Swerve.ANGLE_KD);
     angleController.setFF(Constants.Swerve.ANGLE_KFF);
+
     angleMotor.enableVoltageCompensation(Constants.Swerve.VOLTAGE_COMP);
     angleMotor.burnFlash();
+    
     resetToAbsolute();
   }
 
@@ -140,10 +144,6 @@ public class SwerveModule {
     driveController.setI(Constants.Swerve.DRIVE_KI);
     driveController.setD(Constants.Swerve.DRIVE_KD);
     driveController.setFF(Constants.Swerve.DRIVE_KFF);
-    driveController.setSmartMotionMaxVelocity(0.66667, 1);
-    driveController.setSmartMotionMaxAccel(0.1, 1);
-    driveController.setSmartMotionAllowedClosedLoopError(0.0005, 1);
-    driveController.setSmartMotionMinOutputVelocity(0.0, 1);
 
     driveMotor.enableVoltageCompensation(Constants.Swerve.VOLTAGE_COMP);
     driveMotor.burnFlash();
