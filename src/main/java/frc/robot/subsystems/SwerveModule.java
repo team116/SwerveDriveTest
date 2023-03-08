@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -71,6 +74,16 @@ public class SwerveModule {
     setSpeed(desiredState, isOpenLoop);
   }
 
+  public void setDesiredPosition(SwerveModulePosition desiredPosition) {
+    setAngle(desiredPosition);
+    setPosition(desiredPosition);
+  }
+
+  public void setDesiredPosition(SwerveModulePosition desiredPosition, int pidSlot) {
+    setAngle(desiredPosition);
+    setPosition(desiredPosition, pidSlot);
+  }
+
   private void resetToAbsolute() {
     double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
     integratedAngleEncoder.setPosition(absolutePosition);
@@ -80,14 +93,13 @@ public class SwerveModule {
 
   public void resetRelativeEncoders() {
     //integratedAngleEncoder.setPosition(0.0);
-    //driveEncoder.setPosition(0.0);
+    driveEncoder.setPosition(0.0);
     //lastAngle = getState().angle;
     resetToAbsolute();
   }
 
   public void setWheelToForward() {
     resetToAbsolute();
-
   }
 
   private void configAngleEncoder() {
@@ -102,13 +114,17 @@ public class SwerveModule {
     angleMotor.setSmartCurrentLimit(Constants.Swerve.ANGLE_CONTINUOUS_CURRENT_LIMIT);
     angleMotor.setInverted(Constants.Swerve.ANGLE_INVERT);
     angleMotor.setIdleMode(Constants.Swerve.ANGLE_NEUTRAL_MODE);
+
     integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.ANGLE_CONVERSION_FACTOR);
+
     angleController.setP(Constants.Swerve.ANGLE_KP);
     angleController.setI(Constants.Swerve.ANGLE_KI);
     angleController.setD(Constants.Swerve.ANGLE_KD);
     angleController.setFF(Constants.Swerve.ANGLE_KFF);
+
     angleMotor.enableVoltageCompensation(Constants.Swerve.VOLTAGE_COMP);
     angleMotor.burnFlash();
+    
     resetToAbsolute();
   }
 
@@ -118,14 +134,17 @@ public class SwerveModule {
     driveMotor.setSmartCurrentLimit(Constants.Swerve.DRIVE_CONTINUOUS_CURRENT_LIMIT);
     driveMotor.setInverted(Constants.Swerve.DRIVE_INVERT);
     driveMotor.setIdleMode(Constants.Swerve.DRIVE_NEUTRAL_MODE);
+
     driveEncoder.setVelocityConversionFactor(Constants.Swerve.DRIVE_CONVERSION_VELOCITY_FACTOR);
     SmartDashboard.putNumber("Mod " + moduleNumber + " velocity conversion factor actual", driveEncoder.getVelocityConversionFactor());
     SmartDashboard.putNumber("Mod " + moduleNumber + " velocity conversion factor desired", Constants.Swerve.DRIVE_CONVERSION_VELOCITY_FACTOR);
     driveEncoder.setPositionConversionFactor(Constants.Swerve.DRIVE_CONVERSION_POSITION_FACTOR);
+
     driveController.setP(Constants.Swerve.DRIVE_KP);
     driveController.setI(Constants.Swerve.DRIVE_KI);
     driveController.setD(Constants.Swerve.DRIVE_KD);
     driveController.setFF(Constants.Swerve.DRIVE_KFF);
+
     driveMotor.enableVoltageCompensation(Constants.Swerve.VOLTAGE_COMP);
     driveMotor.burnFlash();
     driveEncoder.setPosition(0.0);
@@ -156,6 +175,53 @@ public class SwerveModule {
 
     angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     lastAngle = angle;
+  }
+
+  public void setAngle(SwerveModulePosition desiredPosition) {
+    angleController.setReference(desiredPosition.angle.getDegrees(), ControlType.kPosition);
+    lastAngle = desiredPosition.angle;
+  }
+
+  private void setPosition(SwerveModulePosition desiredPosition) {
+    driveController.setReference(
+      desiredPosition.distanceMeters,
+      ControlType.kPosition);  // NOTE: Have 0..3 pid controller positions if we choose to use them
+  }
+
+  private void setPosition(SwerveModulePosition desiredPosition, int pidSlot) {
+    driveController.setReference(
+      desiredPosition.distanceMeters,
+      ControlType.kPosition, pidSlot);  // NOTE: Have 0..3 pid controller positions if we choose to use them
+  }
+
+  public void goToPosition(double desiredPosition, int pidSlot) {
+    driveController.setReference(
+      desiredPosition, // in to meters is / 39.37
+      ControlType.kPosition, pidSlot);  // NOTE: Have 0..3 pid controller positions if we choose to use them
+  }
+
+  public void setP(double p, int pidSlot){
+    driveController.setP(p, pidSlot);
+  }
+  
+  public void setI(double i, int pidSlot){
+    driveController.setI(i, pidSlot);
+  }
+
+  public void setD(double d, int pidSlot){
+    driveController.setD(d, pidSlot);
+  }
+
+  public void setMinMax(double min, double max, int pidSlot){
+    driveController.setOutputRange(min, max, pidSlot);
+  }
+
+  public void resetDriveEncoder(){
+    driveEncoder.setPosition(0.0);
+  }
+
+  public void burnFlash(){
+    driveMotor.burnFlash();
   }
 
   public double getAngleOffset() {

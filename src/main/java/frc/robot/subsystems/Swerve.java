@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Swerve extends SubsystemBase {
   private final Pigeon2 gyro;
@@ -47,6 +48,12 @@ public class Swerve extends SubsystemBase {
     }
   }
 
+  public void setMinMax(double min, double max, int pidSlot){
+    for (SwerveModule swerveModule : mSwerveMods){
+      swerveModule.setMinMax(min, max, pidSlot);
+    }
+  }
+
   public void drive(
       Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
@@ -69,6 +76,39 @@ public class Swerve extends SubsystemBase {
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
       
+    }
+  }
+
+  public void setModulePositions(SwerveModulePosition[] desiredPositions) {
+    for (SwerveModule mod : mSwerveMods) {
+      mod.setDesiredPosition(desiredPositions[mod.moduleNumber]);
+    }
+  }
+
+  public void setModulePositions(SwerveModulePosition[] desiredPositions, int pidSlot) {
+    for (SwerveModule mod : mSwerveMods) {
+      mod.setDesiredPosition(desiredPositions[mod.moduleNumber], pidSlot);
+    }
+  }
+
+  public void setPID(double p, double i, double d, int pidSlot){
+    for (SwerveModule mod : mSwerveMods){
+      mod.setP(p, pidSlot);
+      mod.setI(i, pidSlot);
+      mod.setD(d, pidSlot);
+    }
+  }
+
+  
+
+  public void burnFlash(){
+    for (SwerveModule mod : mSwerveMods){
+      mod.burnFlash();
+    }
+  }
+  public void runToPosition(double position, int pidSlot){
+    for (SwerveModule mod : mSwerveMods){
+      mod.goToPosition(position, pidSlot);
     }
   }
 

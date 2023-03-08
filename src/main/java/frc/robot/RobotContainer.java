@@ -36,16 +36,20 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro =
       new JoystickButton(driver, XboxController.Button.kY.value);
+
   private final JoystickButton robotCentric =
       new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
   private final JoystickButton toggleTesterButton =
       new JoystickButton(driver, XboxController.Button.kB.value);
 
-  private final JoystickButton enableArmLimitSwitches =
-      new JoystickButton((driver), XboxController.Button.kX.value);
+  private final JoystickButton armMotorForward = 
+      new JoystickButton(driver, XboxController.Button.kX.value);
 
-  private final JoystickButton disableArmLimitSwitches =
+  private final JoystickButton armMotorReverse = 
+      new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+
+  private final JoystickButton enableArmLimitSwitches =
       new JoystickButton(driver, XboxController.Button.kA.value);
 
   private final JoystickButton autoAlignMacroButton =
@@ -57,7 +61,7 @@ public class RobotContainer {
   private final POVButton dpadLeft = new POVButton(driver, 270);
 
    /* Subsystems */
-  private final Arm arm = new Arm(51);
+  private final Arm arm = new Arm();
   private final Limelight limelight = new Limelight();
   private final Swerve s_Swerve = new Swerve();
 
@@ -74,11 +78,13 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()));
 
     limelight.setDefaultCommand(new DefaultLimelightCommand(limelight));
+
+    arm.setDefaultCommand(new ArmCommand(arm));
     // Configure the button bindings
     configureButtonBindings();
 
-    sendableChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
-    sendableChooser.addOption("Maybe do Something", new DriveToPositionCommand());
+    sendableChooser.addOption("Do Nothing", new DoNothingCommand());
+    sendableChooser.setDefaultOption("Drive To Position", new DriveToPositionCommand(s_Swerve));
     SmartDashboard.putData(sendableChooser);
   }
 
@@ -93,11 +99,15 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
     toggleTesterButton.onTrue(new InstantCommand(() -> limelight.toggleStreamMode()));
+    autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
 
-    enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.enableLimitSwitches()));
-    disableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
+    armMotorForward.onTrue(new InstantCommand(() -> arm.moveUp()));
+    armMotorReverse.onTrue(new InstantCommand(() -> arm.moveDown()));
 
     autoAlignMacroButton.onTrue(new PoleAlignmentCommand(s_Swerve, limelight));
+
+    enableArmLimitSwitches.onTrue(new InstantCommand(() -> arm.disableLimitSwitches()));
+    enableArmLimitSwitches.onFalse(new InstantCommand(() -> arm.enableLimitSwitches()));
 
     // NOTE: These are just debugging examples of possible ways to use dpad
     dpadUp.onTrue(new InstantCommand(() -> System.out.println("dpadUp")));
